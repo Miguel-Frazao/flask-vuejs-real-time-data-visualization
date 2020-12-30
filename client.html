@@ -1,0 +1,96 @@
+<div id="app">
+	<div style="width: 600px; height: 300px;margin: 0 auto;">
+    	<line-chart v-bind:chart-data="chartData"></line-chart>
+	</div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="https://unpkg.com/vue-chartjs@3.4.0/dist/vue-chartjs.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
+
+<script type="text/javascript">
+Vue.component('line-chart', {
+ extends: VueChartJs.Line,
+ //mixins: [VueChartJs.mixins.reactiveProp],
+ props: ['chartData'],
+ data: function () {
+  return {
+   options: {
+    tooltips: {
+     mode: 'index', // so all three tooltips appear
+     intersect: false, // so don't need to be precise with the cursor on the point
+    },
+    scales: {
+     xAxes: [{ // configs for our X axis
+      display: true,
+      scaleLabel: {
+       display: true,
+       labelString: 'Time'
+      }
+     }],
+     yAxes: [{ // configs for our Yaxis
+      display: true,
+      scaleLabel: {
+       display: true,
+       labelString: 'Value'
+      }
+     }]
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+   }
+  }
+ },
+ watch: { // this will be our flag for update
+  'chartData.update_flag': function(new_val, old_val) { 
+     this.$data._chart.update();
+  }
+ },
+ mounted () {
+    this.renderChart(this.chartData, this.options) // Initialize and render the chart
+ }
+})
+
+var vm = new Vue({ 
+ el: '#app',
+ data () {
+   return {
+      chartData: {
+       'update_flag': 0, // our flag for update
+       'labels': [], // our labels
+       'datasets': [] // our datasets
+      },
+      offset: 0
+   }
+ },
+ methods: {
+  fillData (limit) {
+    Vue.http.get('http://127.0.0.1:5000/?limit=' +limit+ '&offset=' +this.offset).then(res => {
+       if(this.offset === 0) { // if first request let's receive 20 rows of data/labels
+        this.chartData.labels = res.body.chart_data.labels;
+        this.chartData.datasets = res.body.chart_data.datasets;
+       }
+       else {
+        this.chartData.labels.splice(0, limit); // remove the first label
+        this.chartData.labels.push(...res.body.chart_data.labels); // like python unpack
+        for (var i = 0; i < res.body.chart_data.datasets.length; i++) {
+           this.chartData.datasets[i].data.splice(0, limit);
+           this.chartData.datasets[i]
+             .data.push(...res.body.chart_data.datasets[i].data);
+     }
+    }
+    this.chartData.update_flag += 1;
+   }, err => {
+    console.log(2,err)
+   }).then(() => { // this will happen always
+    this.offset += limit; // for next request specifications 
+    setTimeout(this.fillData, 1000, 1); // preparing next request
+   });
+       }
+ },
+ created () {
+  this.fillData(20); // let's ask for the first 20 rows
+ },
+})
+</script>
