@@ -35,7 +35,6 @@ def hello():
 	offset = request.args.get('offset', default = 1, type = int)
 	limit = request.args.get('limit', default = 1, type = int)
 	df = pd.read_csv('test_data.csv', skiprows=range(1, offset+1), nrows=limit, parse_dates=['X'])
-	# return df.to_html(index=False)
 
 	cols = [col for col in df.columns if col.startswith('Y')]
 
