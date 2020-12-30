@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-# CREATE OUR DUMMY DATA
-
 # import pandas as pd
 # from datetime import datetime, timedelta
 # import random
