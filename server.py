@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# CREATE DUMMY DATA
+
 # import pandas as pd
 # from datetime import datetime, timedelta
 # import random
@@ -20,6 +22,7 @@
 
 # df.to_csv('test_data.csv', index=False)
 
+# API
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
