@@ -1,22 +1,24 @@
 #!/usr/bin/python3
 
-import pandas as pd
-from datetime import datetime, timedelta
-import random
-now = datetime.now()
-configs = {
-	'Y1': (0, 250),
-	'Y2': (0, 500),
-	'Y3': (0, 750),
-}
+# CREATE OUR DUMMY DATA
 
-df_num_rows = 10000
-y_vals = {i: [random.randint(*configs[i]) for j in range(df_num_rows)] for i in configs}
+# import pandas as pd
+# from datetime import datetime, timedelta
+# import random
+# now = datetime.now()
+# configs = {
+# 	'Y1': (0, 250),
+# 	'Y2': (0, 500),
+# 	'Y3': (0, 750),
+# }
 
-df = pd.DataFrame({
-	'X': ['{:%Y-%m-%d %H:%M:%S}'.format(now + timedelta(seconds=i)) for i in range(df_num_rows)],
-	**y_vals # ex: {**{'a': [1, 2, 3], 'b': [4, 5, 6]}}
-})
+# df_num_rows = 10000
+# y_vals = {i: [random.randint(*configs[i]) for j in range(df_num_rows)] for i in configs}
+
+# df = pd.DataFrame({
+# 	'X': ['{:%Y-%m-%d %H:%M:%S}'.format(now + timedelta(seconds=i)) for i in range(df_num_rows)],
+# 	**y_vals # ex: {**{'a': [1, 2, 3], 'b': [4, 5, 6]}}
+# })
 
 # df.to_csv('test_data.csv', index=False)
 
