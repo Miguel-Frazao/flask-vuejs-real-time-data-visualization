@@ -76,18 +76,17 @@ var vm = new Vue({
         this.chartData.labels.push(...res.body.chart_data.labels); // like python unpack
         for (var i = 0; i < res.body.chart_data.datasets.length; i++) {
            this.chartData.datasets[i].data.splice(0, limit);
-           this.chartData.datasets[i]
-             .data.push(...res.body.chart_data.datasets[i].data);
-     }
-    }
-    this.chartData.update_flag += 1;
-   }, err => {
-    console.log(2,err)
-   }).then(() => { // this will happen always
-    this.offset += limit; // for next request specifications 
-    setTimeout(this.fillData, 1000, 1); // preparing next request
-   });
-       }
+           this.chartData.datasets[i].data.push(...res.body.chart_data.datasets[i].data);
+	     }
+	    }
+	    this.chartData.update_flag += 1;
+	   }, err => {
+	    console.log(2,err)
+	   }).then(() => { // this will happen always
+	    this.offset += limit; // for next request specifications 
+	    setTimeout(this.fillData, 1000, 1); // preparing next request
+	 });
+   }
  },
  created () {
   this.fillData(20); // let's ask for the first 20 rows
