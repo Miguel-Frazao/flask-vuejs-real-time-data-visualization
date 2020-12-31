@@ -48,7 +48,7 @@
 	        }
 	    },
 	    mounted() {
-	        this.renderChart(this.chartData, this.options) // Initialize and render the chart
+	        this.renderChart(this.chartData, this.options); // Initialize and render the chart
 	    }
 	})
 
@@ -79,7 +79,7 @@
 	                }
 	                this.chartData.update_flag += 1;
 	            }, err => {
-	                console.log(2, err)
+	                console.log(err);
 	            }).then(() => { // this will happen always
 	                setTimeout(this.fillData, 1000, 1, offset+limit); // preparing next request
 	            });
