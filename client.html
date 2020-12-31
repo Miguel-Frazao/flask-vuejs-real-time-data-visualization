@@ -61,13 +61,12 @@
 	                'labels': [], // our labels
 	                'datasets': [] // our datasets
 	            },
-	            offset: 0
 	        }
 	    },
 	    methods: {
-	        fillData(limit) {
-	            Vue.http.get('http://127.0.0.1:5000/?limit=' + limit + '&offset=' + this.offset).then(res => {
-	                if (this.offset === 0) { // if first request let's receive 20 rows of data/labels
+	        fillData(limit, offset) {
+	            Vue.http.get('http://127.0.0.1:5000/?limit=' +limit+ '&offset=' +offset).then(res => {
+	                if (offset === 0) { // if first request let's receive 20 rows of data/labels
 	                    this.chartData.labels = res.body.chart_data.labels;
 	                    this.chartData.datasets = res.body.chart_data.datasets;
 	                } else {
@@ -82,13 +81,12 @@
 	            }, err => {
 	                console.log(2, err)
 	            }).then(() => { // this will happen always
-	                this.offset += limit; // for next request specifications 
-	                setTimeout(this.fillData, 1000, 1); // preparing next request
+	                setTimeout(this.fillData, 1000, 1, offset+limit); // preparing next request
 	            });
 	        }
 	    },
 	    created() {
-	        this.fillData(20); // let's ask for the first 20 rows
+	        this.fillData(20, 0); // let's ask for the first 20 rows
 	    },
 	})
 </script>
