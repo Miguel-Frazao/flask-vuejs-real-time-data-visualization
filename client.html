@@ -77,7 +77,7 @@
 	                        this.chartData.datasets[i].data.push(...res.body.chart_data.datasets[i].data);
 	                    }
 	                }
-	                this.chartData.update_flag += 1;
+	                this.chartData.update_flag ^= 1;
 	            }, err => {
 	                console.log(err);
 	            }).then(() => { // this will happen always
